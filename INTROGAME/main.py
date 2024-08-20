@@ -19,14 +19,15 @@ screen.blit(d1, (675,230))"""
 
 pygame.display.flip()
 
-draw_heroes(screen, 0)
+select_heroes = select_heroes(screen)
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        
+
+    
 
 
 
