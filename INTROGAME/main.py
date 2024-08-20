@@ -1,4 +1,5 @@
 import pygame
+from menu import *
 
 pygame.init()
 
@@ -10,19 +11,22 @@ screen.blit(background, (0,0))
 
 """fonte = pygame.font.Font(None, 75)
 texto_inicio = fonte.render("TEXTO INICIO", True, pygame.Color("WHITE"))
-screen.blit(texto_inicio, (390, 300))"""
+screen.blit(texto_inicio, (390, 300))
 
 d1 = pygame.image.load("./imagens/ellen_block.png")
 d1 = pygame.transform.scale(d1, (250, 245))
-screen.blit(d1, (675,230))
+screen.blit(d1, (675,230))"""
 
 pygame.display.flip()
+
+draw_heroes(screen, 0)
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        
 
 
 
