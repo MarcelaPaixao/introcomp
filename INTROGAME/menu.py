@@ -12,6 +12,15 @@ hero_images = [
     pygame.transform.scale(pygame.image.load("./imagens/hero5.png"), (hero_l, hero_h))
 ]
 
+# Carregar imagens dos personagens quando forem selecionados
+selected_hero_images = [
+    pygame.transform.scale(pygame.image.load("./imagens/hero1_selected.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/hero2_selected.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/hero3_selected.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/hero4_selected.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/hero5_selected.png"), (hero_l, hero_h))
+]
+
 # Definir posições dos personagens
 hero_positions = [(190, 115), (700, 115), (150, 310), (450, 310), (725, 310)] 
 
@@ -21,18 +30,18 @@ def draw_heroes(screen, selected_idx, selected_heroes):
     screen.blit(background, (0,0))
 
     for i, pos in enumerate(hero_positions):
-        screen.blit(hero_images[i], pos)
+        
+        if i in selected_heroes:
+            screen.blit(selected_hero_images[i], pos)
+        else:
+            screen.blit(hero_images[i], pos)
 
         if i == selected_idx:
             pygame.draw.polygon(screen, "RED", [
                 (pos[0] + hero_l/2, pos[1] - 3),   # Ponto superior da seta
-                (pos[0] + hero_l / 2 - 20, pos[1] - 20), # Ponto inferior esquerdo
-                (pos[0] + hero_l / 2 + 20, pos[1] - 20)  # Ponto inferior direito
+                (pos[0] + hero_l/2 - 20, pos[1] - 20), # Ponto inferior esquerdo
+                (pos[0] + hero_l/2 + 20, pos[1] - 20)  # Ponto inferior direito
             ])
-        
-        if i in selected_heroes:
-            # Desenha uma borda verde ao redor dos heróis já selecionados
-            pygame.draw.rect(screen, "GRAY", pygame.Rect(pos[0], pos[1], hero_l, hero_h), 5)
     
     pygame.display.flip()  
 
@@ -40,9 +49,7 @@ def draw_heroes(screen, selected_idx, selected_heroes):
 def select_heroes(screen):
     selected_idx = 0
     selected_heroes = []
-    
-    draw_heroes(screen, -1, selected_heroes)  # Desenhar os heróis antes de processar eventos
-    
+        
     run = True
     while run:
         for event in pygame.event.get():
@@ -66,5 +73,8 @@ def select_heroes(screen):
                 draw_heroes(screen, selected_idx, selected_heroes)
     
     return selected_heroes  # Retorna os heróis selecionados
-           
-               
+
+#olhar formato, ver se vilao ta aqui tb  
+"""def status_heroes(screen, heroes):
+
+def menu(screen, )   """      
