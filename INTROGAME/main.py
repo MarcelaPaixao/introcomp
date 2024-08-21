@@ -2,7 +2,7 @@ import pygame
 from menu import *
 from personagens import *
 
-height = 728
+height = 768
 width = 1024
 
 pygame.init()
@@ -15,13 +15,16 @@ screen.blit(background, (0,0))
 
 pygame.display.flip()
 
-selected_heroes = select_heroes(screen)
+#selected_heroes = select_heroes(screen)
+selected_heroes = []
 
 background = pygame.image.load("./imagens/fundo.jpg")
 background = pygame.transform.scale(background, (width, height))
 screen.blit(background, (0,0))
 
 pygame.display.flip()
+
+status_heroes(screen, selected_heroes)
 
 running = True
 while running:

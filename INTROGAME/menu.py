@@ -3,6 +3,9 @@ import pygame
 hero_l = 160
 hero_h = 210
 
+screen_height = 768
+screen_width = 1024
+
 # Carregar imagens dos personagens
 hero_images = [
     pygame.transform.scale(pygame.image.load("./imagens/hero1.png"), (hero_l, hero_h)),
@@ -26,7 +29,7 @@ hero_positions = [(190, 115), (700, 115), (150, 310), (450, 310), (725, 310)]
 
 def draw_heroes(screen, selected_idx, selected_heroes):
     background = pygame.image.load("./imagens/selection.png")
-    background = pygame.transform.scale(background, (1024, 728))
+    background = pygame.transform.scale(background, (screen_width, screen_height))
     screen.blit(background, (0,0))
 
     for i, pos in enumerate(hero_positions):
@@ -62,7 +65,7 @@ def select_heroes(screen):
                     selected_idx = (selected_idx + 1) % 5
                 elif event.key == pygame.K_LEFT:
                     selected_idx = (selected_idx - 1) % 5
-                elif event.key == pygame.K_RETURN:
+                elif event.key == pygame.K_z:
                     if len(selected_heroes) < 3 and selected_idx not in selected_heroes:
                         selected_heroes.append(selected_idx)
                     if len(selected_heroes) == 3:
@@ -74,7 +77,16 @@ def select_heroes(screen):
     
     return selected_heroes  # Retorna os heróis selecionados
 
-#olhar formato, ver se vilao ta aqui tb  
-"""def status_heroes(screen, heroes):
+def status_heroes(screen, heroes):
+    rect_w = screen_width/2.5
+    rect_h = screen_height/4
+    
+    status_rect =  pygame.transform.scale(pygame.image.load("./imagens/status_rect.png"), (rect_w, rect_h))
+    screen.blit(status_rect, (screen_width - rect_w - 10, screen_height - rect_w - 10))
 
-def menu(screen, )   """      
+    #criar uma variavel pra cada heroi? fazer em um loop??
+    
+    pygame.display.flip() 
+
+
+#def menu(screen, )     
