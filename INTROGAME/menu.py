@@ -1,4 +1,5 @@
 import pygame
+from personagens import *
 
 hero_l = 160
 hero_h = 210
@@ -6,35 +7,43 @@ hero_h = 210
 screen_height = 768
 screen_width = 1024
 
+heroes = [
+    Silvio_Santos(), #1
+    Patricia_Abravanel(), #2
+    Ana_Maria_Braga(), #3
+    Rodrigo_Faro(), #4
+    Faustao() #5
+]
+
 # Carregar imagens dos personagens
 hero_images = [
-    pygame.transform.scale(pygame.image.load("./imagens/hero1.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/hero2.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/hero3.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/hero4.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/hero5.png"), (hero_l, hero_h))
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Silvio Santos.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Patricia Abravanel.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Ana Maria.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Rodrigo Faro.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Faustão.png"), (hero_l, hero_h))
 ]
 
 # Carregar imagens dos personagens quando forem selecionados
 selected_hero_images = [
-    pygame.transform.scale(pygame.image.load("./imagens/hero1_selected.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/hero2_selected.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/hero3_selected.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/hero4_selected.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/hero5_selected.png"), (hero_l, hero_h))
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/silvio_sel.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/patricia_sel.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/ana_sel.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/rodrigo_sel.png"), (hero_l, hero_h)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/faustao_sel.png"), (hero_l, hero_h))
 ]
 
 # Definir posições dos personagens
 hero_positions = [(190, 115), (700, 115), (150, 310), (450, 310), (725, 310)] 
 
 def draw_heroes(screen, selected_idx, selected_heroes):
-    background = pygame.image.load("./imagens/selection.png")
+    background = pygame.image.load("./imagens/selecao/selection.png")
     background = pygame.transform.scale(background, (screen_width, screen_height))
     screen.blit(background, (0,0))
 
     for i, pos in enumerate(hero_positions):
         
-        if i in selected_heroes:
+        if heroes[i] in selected_heroes:
             screen.blit(selected_hero_images[i], pos)
         else:
             screen.blit(hero_images[i], pos)
@@ -66,8 +75,8 @@ def select_heroes(screen):
                 elif event.key == pygame.K_LEFT:
                     selected_idx = (selected_idx - 1) % 5
                 elif event.key == pygame.K_z:
-                    if len(selected_heroes) < 3 and selected_idx not in selected_heroes:
-                        selected_heroes.append(selected_idx)
+                    if len(selected_heroes) < 3 and heroes[selected_idx] not in selected_heroes:
+                        selected_heroes.append(heroes[selected_idx])
                     if len(selected_heroes) == 3:
                         run = False  # Finaliza o menu
                 elif event.key == pygame.K_BACKSPACE and selected_heroes:
@@ -77,16 +86,43 @@ def select_heroes(screen):
     
     return selected_heroes  # Retorna os heróis selecionados
 
-def status_heroes(screen, heroes):
-    rect_w = screen_width/2.5
-    rect_h = screen_height/4
+def heroes_status(screen, heroes):
+    panel_w = screen_width/2.5   #400
+    panel_h = panel_h = screen_height/4  #150
     
-    status_rect =  pygame.transform.scale(pygame.image.load("./imagens/status_rect.png"), (rect_w, rect_h))
-    screen.blit(status_rect, (screen_width - rect_w - 10, screen_height - rect_w - 10))
+    status_panel =  pygame.transform.scale(pygame.image.load("./imagens/status_panel.png"), (panel_w, panel_h))
+    screen.blit(status_panel, (screen_width - panel_w - 10, screen_height - panel_h - 10))
 
     #criar uma variavel pra cada heroi? fazer em um loop??
     
     pygame.display.flip() 
+
+def draw_hero_status(screen, selected_heroes):
+    # Configurações da fonte e do fundo
+    font = pygame.font.Font(None, 36)
+    panel_width = screen_width/2.5   #400
+    panel_height = screen_height/4  #150
+    panel_x = screen_width - panel_width - 20
+    panel_y = screen_height - panel_height - 20
+    panel_color = (50, 50, 50)
+    border_color = (200, 200, 200)
+    text_color = (255, 255, 255)
+    selected_color = "RED"
+    
+    # Desenhar o fundo do painel
+    pygame.draw.rect(screen, panel_color, (panel_x, panel_y, panel_width, panel_height))
+    pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 3)
+
+    # Espaçamento entre as linhas de texto
+    spacing = 30
+    
+    for i, hero in enumerate(selected_heroes):
+        # Desenhar o nome e os pontos de vida do herói
+        text_surface = font.render(f"{hero.name.upper()}  {hero.life} / {hero.max_life}", True, text_color)
+        screen.blit(text_surface, (panel_x + 10, panel_y + 10 + i * spacing))
+    
+    pygame.display.flip()
+
 
 
 #def menu(screen, )     

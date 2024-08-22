@@ -6,7 +6,7 @@ FREEZE = 2
 class personagem_gen(pygame.sprite.Sprite):
     """
     Propriedades:
-  
+        
     name
     speed
     attack
@@ -27,10 +27,7 @@ class personagem_gen(pygame.sprite.Sprite):
         self.cooldown = 0
         
         self.pos = [0, 0]
-
-        ##---------------------------alterar depois, as fotos, nomes e pastas!-------------------------
-        #self.imagem = pygame.image.load(f"./imagens/{name}.jpg")
-        self.imagem = pygame.image.load(f"./imagens/selecao/{name}.png")
+        self.imagem = pygame.image.load(f"./imagens/{name}.jpg")
      
     # Vários métodos para retornar atributos
     def return_name(self):
@@ -75,8 +72,7 @@ class personagem_gen(pygame.sprite.Sprite):
     def attack_enemy(self, enemy):
         enemy.receive_attack(self.attack)
 
-    #Atualiza o tempo para uso da skill dos herois e freeze dos vilões
-    #Chamar essa função toda vez que o jogador atacar
+    # Método estático para atualizar o cooldown
     def update_cooldown(heroes, villains): 
         for hero in heroes:
             if hero.cooldown > 0:
@@ -93,7 +89,7 @@ class Silvio_Santos(personagem_gen):
         - Ataque mediano e defesa muito fraca.
     """
     def __init__(self):
-        super().__init__("Silvio Santos", 70, 230, 75, 500, 500) # (name, speed, attack, defense, life, max_life)
+        super().__init__("Silvio", 70, 230, 75, 500, 500) # (name, speed, attack, defense, life, max_life)
 
     def special_skill(self, enemies):
         for enemy in enemies:
@@ -109,7 +105,7 @@ class Faustao(personagem_gen):
     """
     def __init__(self):
         super().__init__("Faustão", 100, 230, 190, 250, 250)  # (name, speed, attack, defense, life, max_life)
-    
+
     def special_skill(self, enemy):
         enemy.cooldown = FREEZE
         self.cooldown = COOLDOWN_TIME
@@ -122,7 +118,7 @@ class Ana_Maria_Braga(personagem_gen):
         - Ataque muito forte e defesa fraca.
     """
     def __init__(self):
-        super().__init__("Ana Maria", 210, 100, 100, 120, 120)  # (name, speed, attack, defense, life, max_life)
+        super().__init__("Ana Maria Braga", 210, 100, 100, 120, 120)  # (name, speed, attack, defense, life, max_life)
 
     def special_skill(self, enemies):
         for enemy in enemies:
