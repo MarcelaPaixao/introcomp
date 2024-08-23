@@ -1,11 +1,17 @@
 import pygame
 from personagens import *
 
-hero_l = 160
+"""hero_l = 160
 hero_h = 210
 
 screen_height = 768
-screen_width = 1024
+screen_width = 1024"""
+
+hero_l = 160/2
+hero_h = 210/2
+
+screen_height = 768/2
+screen_width = 1024/2
 
 heroes = [
     Silvio_Santos(), #1
@@ -34,7 +40,8 @@ selected_hero_images = [
 ]
 
 # Definir posições dos personagens
-hero_positions = [(190, 115), (700, 115), (150, 310), (450, 310), (725, 310)] 
+"""hero_positions = [(190, 115), (700, 115), (150, 310), (450, 310), (725, 310)] """
+hero_positions = [(190/2, 115/2), (700/2, 115/2), (150/2, 310/2), (450/2, 310/2), (725/2, 310/2)] 
 
 def draw_heroes(screen, selected_idx, selected_heroes):
     background = pygame.image.load("./imagens/selecao/selection.png")
@@ -61,7 +68,7 @@ def draw_heroes(screen, selected_idx, selected_heroes):
 def select_heroes(screen):
     selected_idx = 0
     selected_heroes = []
-        
+  
     run = True
     while run:
         for event in pygame.event.get():
@@ -86,40 +93,29 @@ def select_heroes(screen):
     
     return selected_heroes  # Retorna os heróis selecionados
 
-def heroes_status(screen, heroes):
-    panel_w = screen_width/2.5   #400
-    panel_h = panel_h = screen_height/4  #150
-    
-    status_panel =  pygame.transform.scale(pygame.image.load("./imagens/status_panel.png"), (panel_w, panel_h))
-    screen.blit(status_panel, (screen_width - panel_w - 10, screen_height - panel_h - 10))
-
-    #criar uma variavel pra cada heroi? fazer em um loop??
-    
-    pygame.display.flip() 
-
 def draw_hero_status(screen, selected_heroes):
     # Configurações da fonte e do fundo
-    font = pygame.font.Font(None, 36)
-    panel_width = screen_width/2.5   #400
-    panel_height = screen_height/4  #150
-    panel_x = screen_width - panel_width - 20
-    panel_y = screen_height - panel_height - 20
-    panel_color = (50, 50, 50)
+    """font = pygame.font.Font(None, 30)"""
+    font = pygame.font.Font("./fonte/BaskervvilleSC-Regular.ttf", 15)
+    panel_width = screen_width/2.5   
+    panel_height = screen_height/5  
+    panel_x = screen_width - panel_width - 5
+    panel_y = screen_height - panel_height - 5
+    panel_color = (60, 50, 70)
     border_color = (200, 200, 200)
     text_color = (255, 255, 255)
-    selected_color = "RED"
     
     # Desenhar o fundo do painel
     pygame.draw.rect(screen, panel_color, (panel_x, panel_y, panel_width, panel_height))
-    pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 3)
+    pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 2)
 
     # Espaçamento entre as linhas de texto
-    spacing = 30
+    space = 20
     
     for i, hero in enumerate(selected_heroes):
         # Desenhar o nome e os pontos de vida do herói
-        text_surface = font.render(f"{hero.name.upper()}  {hero.life} / {hero.max_life}", True, text_color)
-        screen.blit(text_surface, (panel_x + 10, panel_y + 10 + i * spacing))
+        status = font.render(f"{hero.name}  {hero.life} / {hero.max_life}", True, text_color)
+        screen.blit(status, (panel_x + 10, panel_y + 10 + i * space))
     
     pygame.display.flip()
 

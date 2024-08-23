@@ -2,11 +2,15 @@ import pygame
 from menu import *
 from personagens import *
 
-height = 768
-width = 1024
+"""height = 768
+width = 1024"""
+
+height = 768/2
+width = 1024/2
 
 pygame.init()
 
+clock = pygame.time.Clock()
 screen = pygame.display.set_mode((width, height))
 
 """background = pygame.image.load("./imagens/tela_inicio.jpg")
@@ -30,6 +34,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    clock.tick(60)
 
     
 
