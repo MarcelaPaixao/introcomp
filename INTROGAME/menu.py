@@ -1,17 +1,23 @@
 import pygame
 from personagens import *
 
-"""hero_l = 160
-hero_h = 210
+"""hero_width = 160
+hero_height = 210
 
 screen_height = 768
 screen_width = 1024"""
 
-hero_l = 160/2
-hero_h = 210/2
+hero_width = 160/2
+hero_height = 210/2
+villain_width = 160/2
+villain_height = 210/2
 
 screen_height = 768/2
 screen_width = 1024/2
+
+panel_color = (60, 50, 70)
+border_color = (200, 200, 200)
+text_color = (255, 255, 255)
 
 heroes = [
     Silvio_Santos(), #1
@@ -21,29 +27,34 @@ heroes = [
     Faustao() #5
 ]
 
+enemy = [
+    Ellen_DeGeneres(),
+    Villain2()
+]
+
 # Carregar imagens dos personagens
 hero_images = [
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/Silvio Santos.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/Patricia Abravanel.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/Ana Maria.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/Rodrigo Faro.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/Faustão.png"), (hero_l, hero_h))
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Silvio Santos.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Patricia Abravanel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Ana Maria.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Rodrigo Faro.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/Faustão.png"), (hero_width, hero_height))
 ]
 
 # Carregar imagens dos personagens quando forem selecionados
 selected_hero_images = [
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/silvio_sel.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/patricia_sel.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/ana_sel.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/rodrigo_sel.png"), (hero_l, hero_h)),
-    pygame.transform.scale(pygame.image.load("./imagens/selecao/faustao_sel.png"), (hero_l, hero_h))
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/silvio_sel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/patricia_sel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/ana_sel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/rodrigo_sel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/selecao/faustao_sel.png"), (hero_width, hero_height))
 ]
 
 # Definir posições dos personagens
 """hero_positions = [(190, 115), (700, 115), (150, 310), (450, 310), (725, 310)] """
 hero_positions = [(190/2, 115/2), (700/2, 115/2), (150/2, 310/2), (450/2, 310/2), (725/2, 310/2)] 
 
-def draw_heroes(screen, selected_idx, selected_heroes):
+def draw_heroes_selection(screen, selected_idx, selected_heroes):
     background = pygame.image.load("./imagens/selecao/selection.png")
     background = pygame.transform.scale(background, (screen_width, screen_height))
     screen.blit(background, (0,0))
@@ -57,17 +68,16 @@ def draw_heroes(screen, selected_idx, selected_heroes):
 
         if i == selected_idx:
             pygame.draw.polygon(screen, "RED", [
-                (pos[0] + hero_l/2, pos[1] - 3),   # Ponto superior da seta
-                (pos[0] + hero_l/2 - 20, pos[1] - 20), # Ponto inferior esquerdo
-                (pos[0] + hero_l/2 + 20, pos[1] - 20)  # Ponto inferior direito
+                (pos[0] + hero_width/2, pos[1] - 3),   # Ponto superior da seta
+                (pos[0] + hero_width/2 - 20, pos[1] - 20), # Ponto inferior esquerdo
+                (pos[0] + hero_width/2 + 20, pos[1] - 20)  # Ponto inferior direito
             ])
     
     pygame.display.flip()  
 
 # Função para o menu de seleção de heróis
-def select_heroes(screen):
+def select_characters(screen, selected_heroes, enemies):
     selected_idx = 0
-    selected_heroes = []
   
     run = True
     while run:
@@ -89,36 +99,52 @@ def select_heroes(screen):
                 elif event.key == pygame.K_BACKSPACE and selected_heroes:
                     selected_heroes.pop()
             
-                draw_heroes(screen, selected_idx, selected_heroes)
+                draw_heroes_selection(screen, selected_idx, selected_heroes)
     
-    return selected_heroes  # Retorna os heróis selecionados
+    enemies.append(enemy[0])
+    enemies.append(enemy[1])       
+    
 
-def draw_hero_status(screen, selected_heroes):
+def hero_status(screen, heroes):
     # Configurações da fonte e do fundo
-    """font = pygame.font.Font(None, 30)"""
-    font = pygame.font.Font("./fonte/BaskervvilleSC-Regular.ttf", 15)
+    font = pygame.font.Font("./fonte/Lexend-Regular.ttf", 9)
     panel_width = screen_width/2.5   
     panel_height = screen_height/5  
     panel_x = screen_width - panel_width - 5
     panel_y = screen_height - panel_height - 5
-    panel_color = (60, 50, 70)
-    border_color = (200, 200, 200)
-    text_color = (255, 255, 255)
-    
+
     # Desenhar o fundo do painel
     pygame.draw.rect(screen, panel_color, (panel_x, panel_y, panel_width, panel_height))
     pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 2)
 
     # Espaçamento entre as linhas de texto
-    space = 20
+    space = 22
     
-    for i, hero in enumerate(selected_heroes):
+    for i, hero in enumerate(heroes):
         # Desenhar o nome e os pontos de vida do herói
-        status = font.render(f"{hero.name}  {hero.life} / {hero.max_life}", True, text_color)
-        screen.blit(status, (panel_x + 10, panel_y + 10 + i * space))
+        status = font.render(f"{hero.name.upper()}   {hero.life} / {hero.max_life}", True, text_color)
+        screen.blit(status, (panel_x + 15, panel_y + 10 + i * space))
     
     pygame.display.flip()
 
+def options_menu(screen, heroes, enemies):
+    # Configurações da fonte e do fundo
+    font = pygame.font.Font("./fonte/Lexend-Regular.ttf", 9)
+    panel_width = screen_width/1.8
+    panel_height = screen_height/5  
+    panel_x = 5
+    panel_y = screen_height - panel_height - 5
 
+    # Desenhar o fundo do painel
+    pygame.draw.rect(screen, panel_color, (panel_x, panel_y, panel_width, panel_height))
+    pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 2)
 
-#def menu(screen, )     
+    # Espaçamento entre as linhas de texto
+    space = 22
+    
+    for i, hero in enumerate(heroes):
+        # Desenhar o nome e os pontos de vida do herói
+        status = font.render(f"{hero.name.upper()}   {hero.life} / {hero.max_life}", True, text_color)
+        screen.blit(status, (panel_x + 15, panel_y + 10 + i * space))
+    
+    pygame.display.flip()

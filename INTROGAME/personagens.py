@@ -3,6 +3,9 @@ import pygame
 COOLDOWN_TIME = 3
 FREEZE = 2
 
+width = 160/2
+height = 190/2
+
 class personagem_gen(pygame.sprite.Sprite):
     """
     Propriedades:
@@ -29,8 +32,7 @@ class personagem_gen(pygame.sprite.Sprite):
         self.pos = [0, 0]
 
         ##---------------------------alterar depois, as fotos, nomes e pastas!-------------------------
-        #self.imagem = pygame.image.load(f"./imagens/{name}.jpg")
-        self.imagem = pygame.image.load(f"./imagens/selecao/{name}.png")
+        self.image = pygame.transform.scale(pygame.image.load(f"./imagens/personagens/{name}.png"),(width, height))
      
     # Vários métodos para retornar atributos
     def return_name(self):
@@ -84,6 +86,9 @@ class personagem_gen(pygame.sprite.Sprite):
         for villain in villains:
             if villain.cooldown > 0:
                 villain.cooldown -= 1
+
+    def imprime_teste(self):
+        print(self.name)
 
     
 class Silvio_Santos(personagem_gen):
@@ -155,3 +160,24 @@ class Rodrigo_Faro(personagem_gen):
     def special_skill(self, enemy):
         enemy.receive_attack(100)  # Dano alto de exemplo
         self.cooldown = COOLDOWN_TIME
+
+class Ellen_DeGeneres(personagem_gen):
+    """"
+
+    """
+    def __init__(self):
+        super().__init__("Ellen DeGeneres", 180, 150, 150, 200, 200)  # (name, speed, attack, defense, life, max_life)
+
+    def special_skill(self, enemy):
+        enemy.receive_attack(100)  # Dano alto de exemplo
+        
+class Villain2(personagem_gen):
+    """"
+
+    """
+    def __init__(self):
+        super().__init__("Villain2", 180, 150, 150, 200, 200)  # (name, speed, attack, defense, life, max_life)
+
+    def special_skill(self, enemy):
+        enemy.receive_attack(100)  # Dano alto de exemplo
+  

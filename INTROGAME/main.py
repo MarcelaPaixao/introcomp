@@ -19,15 +19,22 @@ screen.blit(background, (0,0))
 
 pygame.display.flip()"""
 
-selected_heroes = select_heroes(screen)
+selected_heroes = []
+enemies = []
+select_characters(screen, selected_heroes, enemies)
 
 background = pygame.image.load("./imagens/fundo.jpg")
 background = pygame.transform.scale(background, (width, height))
 screen.blit(background, (0,0))
 
+hero_status(screen, selected_heroes)
+options_menu(screen, selected_heroes, enemies)
+screen.blit(enemies[0].image, (10,170))
+screen.blit(enemies[1].image, (110,170))
+screen.blit(selected_heroes[0].image, (300,170))
+screen.blit(selected_heroes[1].image, (350,170))
+screen.blit(selected_heroes[2].image, (400,170))
 pygame.display.flip()
-
-draw_hero_status(screen, selected_heroes)
 
 running = True
 while running:
