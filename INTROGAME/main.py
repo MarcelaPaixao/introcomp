@@ -46,43 +46,52 @@ lost_panel = pygame.transform.scale(pygame.image.load("./imagens/lost.jpg"), (wi
 
 run = True
 current_hero_idx = -1
+current_enemy_idx = -1
 
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
-    #screen.blit(background, (0, 0))
+    screen.blit(background, (0, 0))
     
-    selected_heroes = update_heroes_list(selected_heroes)
-    
+    # Verifica se todos os heróis foram derrotados
     if not selected_heroes and enemies:
         screen.blit(lost_panel, (width/2 - 100, height/2 - 100))
-        pygame.display.flip()
-        pygame.time.delay(2000)
         break
     
+    # Reseta a defesa dos heróis que estavam defendendo no turno anterior
+    for hero in selected_heroes:
+        if hero.is_defending:
+            hero.reset_defense()  # Reseta a defesa ao valor normal
+    
+    # Desenha os personagens e atualiza a interface
     draw_characters(screen, selected_heroes, enemies)
     hero_status(screen, selected_heroes)
     update_cooldown(selected_heroes, enemies)
 
+    # Atualiza o índice do herói atual e executa as ações de batalha
     current_hero_idx = (current_hero_idx + 1) % len(selected_heroes)
     current_hero = selected_heroes[current_hero_idx]
     
     battle_actions(screen, current_hero_idx, selected_heroes, enemies)
 
-    enemies = update_enemies_list(enemies)
+    # Verifica se todos os inimigos foram derrotados
     if not enemies:
         screen.blit(win_panel, (width/2, height/2))
-        pygame.display.flip()
-        pygame.time.delay(2000)
         break
 
-    #função de ataque do inimigo, que reveza entre os dois atacando
-    enemies[0].attack_enemy(current_hero)
+    # Atualiza o índice do inimigo atual e realiza o ataque
+    current_enemy_idx = (current_enemy_idx + 1) % len(enemies)
+    current_enemy = enemies[current_enemy_idx]
 
+    enemy_attack(current_enemy, current_hero, selected_heroes)
+
+    # Atualiza a tela e controla o framerate
     pygame.display.flip()
-
     clock.tick(60)
 
+
+pygame.display.flip()
+pygame.time.delay(4000)
 pygame.quit()

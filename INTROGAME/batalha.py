@@ -60,6 +60,7 @@ def battle_actions(screen, idx_hero, heroes, enemies):
     SKILL = 2
     actions = ["ATTACK", "DEFEND", "SKILL"]
     
+    draw_actions_menu(screen, selected_action, heroes[idx_hero])
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -79,11 +80,12 @@ def battle_actions(screen, idx_hero, heroes, enemies):
                         else:
                             heroes[idx_hero].attack_enemy(selected_enemy)
                             run = False  # Finaliza o menu
+                        if selected_enemy.is_alive() == False:
+                            enemies.remove(selected_enemy)
                     
-                    #ta dando erro aqui
                     elif selected_action == DEFEND:
-                            heroes[idx_hero].defense *= 2  # Dobra a defesa do herói
-                            run = False  # Finaliza o menu                     
+                        heroes[idx_hero].defend()  # Ativa a defesa
+                        run = False                    
                     
                     elif selected_action == SKILL:
                         if heroes[idx_hero].is_skill_ready() == True:
@@ -101,11 +103,20 @@ def battle_actions(screen, idx_hero, heroes, enemies):
                                 else:
                                     heroes[idx_hero].special_skill(selected_enemy)
                                     run = False
+                                if selected_enemy.is_alive() == False:
+                                    enemies.remove(selected_enemy)
                             else:
                                 heroes[idx_hero].special_skill(enemies)
                                 run = False
                    
             draw_actions_menu(screen, selected_action, heroes[idx_hero])
-
     
     pygame.display.flip()
+
+def enemy_attack(enemy, hero, heroes):
+    #if enemy.is_alive() and hero.is_alive():
+    if enemy.is_skill_ready():
+        hero.receive_attack(enemy.attack)
+    
+    if hero.is_alive() == False:
+        heroes.remove(hero)

@@ -107,8 +107,12 @@ def select_characters(screen, selected_heroes, enemies):
                     selected_heroes.pop()
             
                 draw_heroes_selection(screen, selected_idx, selected_heroes)
+                
+                if not run:
+                    pygame.time.delay(200) 
     
     selected_heroes.sort(key=lambda hero: hero.speed, reverse=True)
+    update_positions(selected_heroes)
     enemies.append(enemy[0])
     enemies.append(enemy[1])       
     
@@ -126,7 +130,7 @@ def hero_status(screen, heroes):
     
     for i, hero in enumerate(heroes):
         nome = font.render(f"{hero.name.upper()}", True, text_color)
-        status = font.render(f"{hero.life} / {hero.max_life}", True, text_color)
+        status = font.render(f"{hero.life:.1f} / {hero.max_life}", True, text_color)
         screen.blit(nome, (panel_x + 15, panel_y + 10 + i * space))
         screen.blit(status, (panel_x + panel_x/2 - 10, panel_y + 10 + i * space))
     

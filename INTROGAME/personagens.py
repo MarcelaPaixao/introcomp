@@ -14,22 +14,25 @@ class personagem_gen(pygame.sprite.Sprite):
     speed
     attack
     defense
+    is_defending
     life
     image
     max_life
     cooldown : skill só pode ser usada a cada 3 rodadas
+    pos
     """
-    def __init__(self, name, speed, attack, defense, life, max_life):
+    def __init__(self, name, speed, attack, defense, max_life):
         super().__init__()
         self.name = name
         self.speed = speed
         self.attack = attack
         self.defense = defense
+        self.original_defense = defense
+        self.is_defending = False
         self.max_life = max_life
-        self.life = life
+        self.life = max_life
         self.cooldown = 0
-        
-        self.pos = [0, 0]
+        self.pos = [0,0]
         self.image = pygame.transform.scale(pygame.image.load(f"./imagens/personagens/{name}.png"),(width, height))
      
     # Vários métodos para retornar atributos
@@ -63,14 +66,23 @@ class personagem_gen(pygame.sprite.Sprite):
     def is_alive(self):
         return self.life > 0
     
+    def defend(self):
+        self.defense = self.original_defense * 2
+        self.is_defending = True
+
+    def reset_defense(self):
+        self.defense = self.original_defense
+        self.is_defending = False
+    
     def increase_life(self, life_points):
         self.life += life_points
         if self.life > self.max_life:
             self.life = self.max_life
         
-    def receive_attack(self, damage):
-        if self.life > 0:
-            self.life -= damage * (50 / (50 + self.defense))
+    def receive_attack(self, attack):
+        damage = attack * (50 / (50 + self.defense))
+ 
+        self.life -= damage
         if self.life < 0:
             self.life = 0
             
@@ -91,7 +103,7 @@ class Silvio_Santos(personagem_gen):
         - Ataque mediano e defesa muito fraca.
     """
     def __init__(self):
-        super().__init__("Silvio Santos", 70, 230, 75, 500, 500) # (name, speed, attack, defense, life, max_life)
+        super().__init__("Silvio Santos", 70, 230, 75, 500) # speed, attack, defense, max_life
 
     def special_skill(self, enemies):
         for enemy in enemies:
@@ -106,12 +118,11 @@ class Faustao(personagem_gen):
         - Ataque forte e defesa ok.
     """
     def __init__(self):
-        super().__init__("Faustão", 100, 230, 190, 250, 250)  # (name, speed, attack, defense, life, max_life)
+        super().__init__("Faustão", 100, 230, 190, 250)
     
     def special_skill(self, enemy):
         enemy.cooldown = FREEZE
         #se o tamanho der errado, mandar o tamanho como parametro
-        #dar blit aqui?
         enemy.image = pygame.transform.scale(pygame.image.load(f"./imagens/{enemy.name}_block.png"), (width, height))
         self.cooldown = COOLDOWN_TIME
 
@@ -123,8 +134,7 @@ class Ana_Maria_Braga(personagem_gen):
         - Ataque muito forte e defesa fraca.
     """
     def __init__(self):
-        super().__init__("Ana Maria", 210, 100, 100, 120, 120)  # (name, speed, attack, defense, life, max_life)
-
+        super().__init__("Ana Maria", 210, 100, 100, 120)  
     def special_skill(self, enemies):
         for enemy in enemies:
             enemy.receive_attack(30)  # Dano infligido pelo Louro José
@@ -138,7 +148,7 @@ class Patricia_Abravanel(personagem_gen):
         - Ataque muito fraco e defesa média.
     """
     def __init__(self):
-        super().__init__("Patricia Abravanel", 200, 75, 100, 120, 120)  # (name, speed, attack, defense, life, max_life)
+        super().__init__("Patricia Abravanel", 200, 75, 100, 120)  
 
     def special_skill(self, ally):
         ally.increase_life(50)
@@ -151,7 +161,7 @@ class Rodrigo_Faro(personagem_gen):
         - Características podem ser ajustadas.
     """
     def __init__(self):
-        super().__init__("Rodrigo Faro", 180, 150, 150, 200, 200)  # (name, speed, attack, defense, life, max_life)
+        super().__init__("Rodrigo Faro", 180, 150, 150, 200)
 
     def special_skill(self, enemy):
         enemy.receive_attack(100)  # Dano alto de exemplo
@@ -162,16 +172,17 @@ class Ellen_DeGeneres(personagem_gen):
 
     """
     def __init__(self):
-        super().__init__("Ellen DeGeneres", 180, 150, 150, 200, 200)  # (name, speed, attack, defense, life, max_life)
-
+        super().__init__("Ellen DeGeneres", 180, 100, 110, 200) 
+        self.pos = [320, 185]
         
 class Villain2(personagem_gen):
     """"
 
     """
     def __init__(self):
-        super().__init__("Villain2", 180, 150, 150, 200, 200)  # (name, speed, attack, defense, life, max_life)
-  
+        super().__init__("Villain2", 180, 100, 110, 200) 
+        self.pos = [380, 160]
+
 #Atualiza o tempo para uso da skill dos herois e freeze dos vilões
 #Chamar essa função toda vez que o jogador atacar
 def update_cooldown(heroes, villains): 
@@ -184,30 +195,17 @@ def update_cooldown(heroes, villains):
         if villain.cooldown == 0:
             villain.update_image()
 
-def draw_characters(screen, heroes, enemies):
-    pos_enemy = [(320, 185), (380, 160)]
+def update_positions(heroes):
     pos_hero = [(120, 155), (20, 170), (80, 200)]
+    for i, hero in enumerate (heroes): 
+            hero.pos = pos_hero[i]
 
-    for i, enemy in enumerate(enemies):
-        if enemy.is_alive() == True: 
-            screen.blit(enemy.image, pos_enemy[i])
-   
-    for i, hero in enumerate(heroes):
-        if hero.is_alive() == True: 
-            screen.blit(hero.image, pos_hero[i])
-    
-    #pygame.display.flip()
-
-def update_heroes_list(heroes):
-    new_list = []
-    for hero in heroes:
-        if hero.is_alive() == True:
-            new_list.append(hero)
-    return new_list
-
-def update_enemies_list(enemies):
-    new_list = []
+def draw_characters(screen, heroes, enemies):
     for enemy in enemies:
-        if enemy.is_alive() == True:
-            new_list.append(enemy)
-    return new_list
+        if enemy.is_alive(): 
+            screen.blit(enemy.image, enemy.pos)
+   
+    for hero in heroes:
+        if hero.is_alive(): 
+            screen.blit(hero.image, hero.pos)
+    
