@@ -53,10 +53,14 @@ selected_hero_images = [
 
 # Definir posições dos personagens
 """hero_positions = [(190, 115), (700, 115), (150, 310), (450, 310), (725, 310)] """
-hero_positions = [(190/2, 115/2), (700/2, 115/2), (150/2, 310/2), (450/2, 310/2), (725/2, 310/2)] 
+hero_positions = [(180/2, 130/2), (690/2, 130/2), (140/2, 340/2), (440/2, 340/2), (720/2, 340/2)] 
 
 #Define as ações possíveis do jogador
 actions = ["ATTACK", "DEFEND", "SKILL"]
+
+def draw_rect(screen, panel_color, panel_x, panel_y, panel_width, panel_height):
+    pygame.draw.rect(screen, panel_color, (panel_x, panel_y, panel_width, panel_height))
+    pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 2)
 
 def draw_heroes_selection(screen, selected_idx, selected_heroes):
     background = pygame.image.load("./imagens/selecao/selection.png")
@@ -82,7 +86,6 @@ def draw_heroes_selection(screen, selected_idx, selected_heroes):
 # Função para o menu de seleção de heróis
 def select_characters(screen, selected_heroes, enemies):
     selected_idx = 0
-  
     run = True
     while run:
         for event in pygame.event.get():
@@ -105,6 +108,7 @@ def select_characters(screen, selected_heroes, enemies):
             
                 draw_heroes_selection(screen, selected_idx, selected_heroes)
     
+    selected_heroes.sort(key=lambda hero: hero.speed, reverse=True)
     enemies.append(enemy[0])
     enemies.append(enemy[1])       
     
@@ -118,14 +122,13 @@ def hero_status(screen, heroes):
     space = 22
 
     # Desenhar o fundo do painel
-    pygame.draw.rect(screen, panel_color, (panel_x, panel_y, panel_width, panel_height))
-    pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 2)
+    draw_rect(screen, panel_color, panel_x, panel_y, panel_width, panel_height)
     
     for i, hero in enumerate(heroes):
         nome = font.render(f"{hero.name.upper()}", True, text_color)
         status = font.render(f"{hero.life} / {hero.max_life}", True, text_color)
         screen.blit(nome, (panel_x + 15, panel_y + 10 + i * space))
-        screen.blit(status, (panel_x + panel_x/2, panel_y + 10 + i * space))
+        screen.blit(status, (panel_x + panel_x/2 - 10, panel_y + 10 + i * space))
     
     pygame.display.flip()
 
@@ -139,10 +142,9 @@ def draw_actions_menu(screen, selected_action, hero):
     space = 80
 
     # Desenhar o fundo do painel
-    pygame.draw.rect(screen, panel_color, (panel_x, panel_y, panel_width, panel_height))
-    pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 2)
-
-    hero_name = font.render(f"{hero.name.upper()} 'S TURN:", True, text_color)
+    draw_rect(screen, panel_color, panel_x, panel_y, panel_width, panel_height)
+    
+    hero_name = font.render(f"{hero.name.upper()} 'S TURN!", True, text_color)
     screen.blit(hero_name, (panel_x + 15, panel_y + 10))
 
     for i, action in enumerate(actions):
@@ -175,8 +177,7 @@ def draw_enemies_selection(screen, enemies, selected_idx):
     space = 140
 
     # Desenhar o fundo do painel
-    pygame.draw.rect(screen, panel_color, (panel_x, panel_y, panel_width, panel_height))
-    pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 2)
+    draw_rect(screen, panel_color, panel_x, panel_y, panel_width, panel_height)
 
     for i, enemy in enumerate(enemies):
         # Desenhar o nome da ação
@@ -193,64 +194,31 @@ def draw_enemies_selection(screen, enemies, selected_idx):
     
     pygame.display.flip()
 
-def select_enemy(screen, enemies):
-    run = True
-    selected_idx = 0
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                return []
-            
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    selected_idx = (selected_idx + 1) % len(enemies)
-                elif event.key == pygame.K_LEFT:
-                    selected_idx = (selected_idx - 1) % len(enemies)
-                elif event.key == pygame.K_z:
-                    return selected_idx
-                elif event.key == pygame.K_x:
-                    return -1
-            
-            draw_enemies_selection(screen, enemies, selected_idx)
-                    
+def draw_ally_selection(screen, selected_idx, allies):
+    # Configurações da fonte e do fundo
+    font = pygame.font.Font("./fonte/Lexend-Regular.ttf", 10)
+    panel_width = screen_width/1.8
+    panel_height = screen_height/5  
+    panel_x = 5
+    panel_y = screen_height - panel_height - 5
+    space = 140
 
-def actions_menu(screen, idx_hero, heroes, enemies):
-    run = True
-    selected_action = 0
-    #ATTACK = 0
-    #DEFEND = 1
-    #SKILL = 2
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                return []
-            
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    selected_action = (selected_action + 1) % len(actions)
-                elif event.key == pygame.K_LEFT:
-                    selected_action = (selected_action - 1) % len(actions)
-                elif event.key == pygame.K_z:
-                    if selected_action == 0:
-                        selected_enemy = select_enemy(screen, enemies)
-                        if selected_enemy == -1:
-                            continue  # Volta ao menu de ações
-                        else:
-                            heroes[idx_hero].attack_enemy(enemies[selected_enemy])
-                            run = False  # Finaliza o menu
-                    """elif selected_action == 1:
-                        #selected_enemy = select_enemy(screen, enemies)                      
-                        #ta errado, ver a logica da defesa
-                        heroes[idx_hero].receive_attack(selected_enemy)
-                        run = False  # Finaliza o menu
-                    elif selected_action == 2:
-                        if heroes[idx_hero].is_skill_ready() == True:
-                            #fazer uma função para usar dependendo de quem for o heroi (o paramtro de cada um muda)
-                    """
-            draw_actions_menu(screen, selected_action, heroes[idx_hero])
+    # Desenhar o fundo do painel
+    draw_rect(screen, panel_color, panel_x, panel_y, panel_width, panel_height)
 
+    for i, ally in enumerate(allies):
+        # Desenhar o nome da ação
+        ally_name = font.render(ally.name.upper(), True, text_color)
+        screen.blit(ally_name, (panel_x + 40 + i * space, panel_y + 35))        
+        
+        # Desenhar a seta ao lado da ação selecionada
+        if i == selected_idx:
+            pygame.draw.polygon(screen, arrow_color, [
+                (panel_x + 30 + i * space, panel_y + 40),   
+                (panel_x + 20 + i * space, panel_y + 35),   
+                (panel_x + 20 + i * space, panel_y + 45)    
+            ])
     
     pygame.display.flip()
+
  
