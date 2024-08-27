@@ -35,9 +35,15 @@ screen.blit(background, (0, 0))
 
 """
     1-Carregar imagens de vitória e derrota (mantido comentado para futura implementação)
-    2-ajustar imagem ded seleção (colocar um titulo no quadrado do meio)
+    2-ajustar imagem de seleção (colocar um titulo no quadrado do meio)
     3-musicas e sons
     4-colocar o nome (e atributos?) dos personagens na hora da seleção
+    5-ajustr tamanhos personagens
+    6-efeito visual/sonoro para quando sofrerem ataque
+    7-Jimmy fallon imagens ajustar
+    8-imagem de inicio
+    9-rosot 3x4 decente pra Ana Maria
+    10-Nome na tela de fundo (Batalha de apresentadores os algo do tp)
     
 """
  

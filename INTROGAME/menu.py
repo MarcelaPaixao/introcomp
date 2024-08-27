@@ -30,7 +30,7 @@ heroes = [
 
 enemy = [
     Ellen_DeGeneres(),
-    Villain2()
+    Jimmy_Falon()
 ]
 
 # Carregar imagens dos personagens

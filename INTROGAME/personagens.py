@@ -137,7 +137,7 @@ class Ana_Maria_Braga(personagem_gen):
         super().__init__("Ana Maria", 210, 100, 100, 120)  
     def special_skill(self, enemies):
         for enemy in enemies:
-            enemy.receive_attack(30)  # Dano infligido pelo Louro José
+            enemy.receive_attack(40)  # Dano infligido pelo Louro José
         self.cooldown = COOLDOWN_TIME
 
 
@@ -151,20 +151,19 @@ class Patricia_Abravanel(personagem_gen):
         super().__init__("Patricia Abravanel", 200, 75, 100, 120)  
 
     def special_skill(self, ally):
-        ally.increase_life(50)
+        ally.increase_life(60)
         self.cooldown = COOLDOWN_TIME
 
 
 class Rodrigo_Faro(personagem_gen):  
     """"
-        - Implementação de exemplo para Rodrigo Faro.
-        - Características podem ser ajustadas.
+        
     """
     def __init__(self):
         super().__init__("Rodrigo Faro", 180, 150, 150, 200)
 
     def special_skill(self, enemy):
-        enemy.receive_attack(100)  # Dano alto de exemplo
+        enemy.receive_attack(70) 
         self.cooldown = COOLDOWN_TIME
 
 class Ellen_DeGeneres(personagem_gen):
@@ -172,15 +171,15 @@ class Ellen_DeGeneres(personagem_gen):
 
     """
     def __init__(self):
-        super().__init__("Ellen DeGeneres", 180, 100, 110, 200) 
+        super().__init__("Ellen DeGeneres", 180, 120, 150, 400) 
         self.pos = [320, 185]
         
-class Villain2(personagem_gen):
+class Jimmy_Falon(personagem_gen):
     """"
 
     """
     def __init__(self):
-        super().__init__("Villain2", 180, 100, 110, 200) 
+        super().__init__("Jimmy Fallon", 180, 140, 150, 250) 
         self.pos = [380, 160]
 
 #Atualiza o tempo para uso da skill dos herois e freeze dos vilões
