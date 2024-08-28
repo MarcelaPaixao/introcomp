@@ -4,21 +4,23 @@ from personagens import *
 from batalha import *
 
 # Dimensões da tela
-height = 768/2
-width = 1024/2
-
-"""height = 768
-width = 1024"""
+height = 750
+width = 1024
 
 pygame.init()
 
 clock = pygame.time.Clock()
 
+pygame.mixer.init()
+pygame.mixer.music.load("./sons/nome.mp3") 
+pygame.mixer.music.set_volume(0.5)  # Volume de 0.0 a 1.0
+pygame.mixer.music.play(loops=-1)
+
 # Configurar a tela
 screen = pygame.display.set_mode((width, height))
 
 # Carregar e exibir o plano de fundo da tela inicial
-background = pygame.transform.scale(pygame.image.load("./imagens/tela_inicio.jpg"), (width, height))
+background = pygame.transform.scale(pygame.image.load("./imagens/background/tela_inicio.png"), (width, height))
 screen.blit(background, (0, 0))
 pygame.display.flip()
 
@@ -30,29 +32,22 @@ enemies = []
 select_characters(screen, selected_heroes, enemies)
 
 # Carregar o plano de fundo da batalha
-background = pygame.transform.scale(pygame.image.load("./imagens/fundo.jpg"), (width, height))
+background = pygame.transform.scale(pygame.image.load("./imagens/background/fundo.png"), (width, height))
 screen.blit(background, (0, 0))
 
 """
-    1-Carregar imagens de vitória e derrota (mantido comentado para futura implementação)
-    2-ajustar imagem de seleção (colocar um titulo no quadrado do meio)
     3-musicas e sons
-    4-colocar o nome (e atributos?) dos personagens na hora da seleção
-    5-ajustr tamanhos personagens
     6-efeito visual/sonoro para quando sofrerem ataque
-    7-Jimmy fallon imagens ajustar
-    8-imagem de inicio
-    9-rosot 3x4 decente pra Ana Maria
-    10-Nome na tela de fundo (Batalha de apresentadores os algo do tp)
     
 """
  
-win_panel = pygame.transform.scale(pygame.image.load("./imagens/win.jpg"), (width/1.5, height/1.5))
-lost_panel = pygame.transform.scale(pygame.image.load("./imagens/lost.jpg"), (width/1.5, height/1.5))
+win_panel = pygame.transform.scale(pygame.image.load("./imagens/background/win.png"), (width, height))
+lost_panel = pygame.transform.scale(pygame.image.load("./imagens/background/lost.png"), (width, height))
 
 run = True
 current_hero_idx = -1
 current_enemy_idx = -1
+
 
 while run:
     for event in pygame.event.get():
@@ -63,7 +58,7 @@ while run:
     
     # Verifica se todos os heróis foram derrotados
     if not selected_heroes and enemies:
-        screen.blit(lost_panel, (width/2 - 100, height/2 - 100))
+        screen.blit(lost_panel, (0, 0))
         break
     
     # Reseta a defesa dos heróis que estavam defendendo no turno anterior
@@ -73,7 +68,7 @@ while run:
     
     # Desenha os personagens e atualiza a interface
     draw_characters(screen, selected_heroes, enemies)
-    hero_status(screen, selected_heroes)
+    characters_status(screen, selected_heroes, enemies)
     update_cooldown(selected_heroes, enemies)
 
     # Atualiza o índice do herói atual e executa as ações de batalha
@@ -84,7 +79,7 @@ while run:
 
     # Verifica se todos os inimigos foram derrotados
     if not enemies:
-        screen.blit(win_panel, (width/2, height/2))
+        screen.blit(win_panel, (0, 0))
         break
 
     # Atualiza o índice do inimigo atual e realiza o ataque
@@ -97,7 +92,6 @@ while run:
     pygame.display.flip()
     clock.tick(60)
 
-
 pygame.display.flip()
-pygame.time.delay(4000)
+pygame.time.delay(10000)
 pygame.quit()

@@ -1,9 +1,0 @@
-dancarina1: (150, 230)
-dancarina2: (140, 240)
-ellen_block: (250, 245)
-
-d2 = pygame.image.load("./imagens/dancarina2.png")
-d2 = pygame.transform.scale(d2, (140, 240))
-screen.blit(d2, (500,230))
-
-screen.blit(d1, (675,230))

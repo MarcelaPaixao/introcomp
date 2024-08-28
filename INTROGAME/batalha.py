@@ -114,7 +114,6 @@ def battle_actions(screen, idx_hero, heroes, enemies):
     pygame.display.flip()
 
 def enemy_attack(enemy, hero, heroes):
-    #if enemy.is_alive() and hero.is_alive():
     if enemy.is_skill_ready():
         hero.receive_attack(enemy.attack)
     
