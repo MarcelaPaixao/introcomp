@@ -33,20 +33,20 @@ enemy = [
 
 # Carregar imagens dos personagens
 hero_images = [
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/Silvio Santos.png"), (hero_width, hero_height)),
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/Patricia Abravanel.png"), (hero_width, hero_height)),
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/Ana Maria.png"), (hero_width, hero_height)),
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/Faustão.png"), (hero_width, hero_height)),
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/Rodrigo Faro.png"), (hero_width, hero_height))
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/Silvio Santos.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/Patricia Abravanel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/Ana Maria.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/Faustão.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/Rodrigo Faro.png"), (hero_width, hero_height))
 ]
 
 # Carregar imagens dos personagens quando forem selecionados
 selected_hero_images = [
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/silvio_sel.png"), (hero_width, hero_height)),
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/patricia_sel.png"), (hero_width, hero_height)),
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/ana_sel.png"), (hero_width, hero_height)),
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/faustao_sel.png"), (hero_width, hero_height)),
-    pygame.transform.scale(pygame.image.load("./imagens/pesonagens/selecao/rodrigo_sel.png"), (hero_width, hero_height))
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/silvio_sel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/patricia_sel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/ana_sel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/faustao_sel.png"), (hero_width, hero_height)),
+    pygame.transform.scale(pygame.image.load("./imagens/personagens/selecao/rodrigo_sel.png"), (hero_width, hero_height))
 ]
 
 # Definir posições dos personagens
@@ -60,7 +60,7 @@ def draw_rect(screen, panel_color, panel_x, panel_y, panel_width, panel_height):
     pygame.draw.rect(screen, border_color, (panel_x, panel_y, panel_width, panel_height), 3)
 
 def draw_heroes_selection(screen, selected_idx, selected_heroes):
-    background = pygame.image.load("./imagens/selecao/selection.png")
+    background = pygame.image.load("./imagens/background/selection.png")
     background = pygame.transform.scale(background, (screen_width, screen_height))
     screen.blit(background, (0,0))
 

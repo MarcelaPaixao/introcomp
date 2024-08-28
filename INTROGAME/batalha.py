@@ -70,8 +70,10 @@ def battle_actions(screen, idx_hero, heroes, enemies):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     selected_action = (selected_action + 1) % len(actions)
+                    draw_actions_menu(screen, selected_action, heroes[idx_hero])
                 elif event.key == pygame.K_LEFT:
                     selected_action = (selected_action - 1) % len(actions)
+                    draw_actions_menu(screen, selected_action, heroes[idx_hero])
                 elif event.key == pygame.K_z:
                     if selected_action == ATTACK:
                         selected_enemy = select_enemy(screen, enemies)
@@ -108,10 +110,8 @@ def battle_actions(screen, idx_hero, heroes, enemies):
                             else:
                                 heroes[idx_hero].special_skill(enemies)
                                 run = False
-                   
-            draw_actions_menu(screen, selected_action, heroes[idx_hero])
     
-    pygame.display.flip()
+    #pygame.display.flip()
 
 def enemy_attack(enemy, hero, heroes):
     if enemy.is_skill_ready():

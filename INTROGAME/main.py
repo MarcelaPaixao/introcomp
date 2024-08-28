@@ -2,6 +2,7 @@ import pygame
 from menu import *
 from personagens import *
 from batalha import *
+from audio import Audio
 
 # Dimensões da tela
 height = 750
@@ -10,11 +11,9 @@ width = 1024
 pygame.init()
 
 clock = pygame.time.Clock()
-
-pygame.mixer.init()
-pygame.mixer.music.load("./sons/nome.mp3") 
-pygame.mixer.music.set_volume(0.5)  # Volume de 0.0 a 1.0
-pygame.mixer.music.play(loops=-1)
+playlist = ["./sons/musica1.ogg", "./sons/musica2.ogg", "./sons/musica3.ogg"]  # Substitua pelos caminhos corretos
+audio_manager = Audio(playlist)
+audio_manager.iniciar_musica()
 
 # Configurar a tela
 screen = pygame.display.set_mode((width, height))
@@ -36,7 +35,6 @@ background = pygame.transform.scale(pygame.image.load("./imagens/background/fund
 screen.blit(background, (0, 0))
 
 """
-    3-musicas e sons
     6-efeito visual/sonoro para quando sofrerem ataque
     
 """
@@ -53,7 +51,8 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
+    
+    audio_manager.gerencia_musicas(event)
     screen.blit(background, (0, 0))
     
     # Verifica se todos os heróis foram derrotados
@@ -93,5 +92,5 @@ while run:
     clock.tick(60)
 
 pygame.display.flip()
-pygame.time.delay(10000)
+pygame.time.delay(9000)
 pygame.quit()
