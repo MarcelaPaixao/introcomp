@@ -13,9 +13,9 @@ panel_width = screen_width/1.85
 panel_x = 15
 panel_y = screen_height - panel_height - 15 
 
-panel_color = (60, 50, 70)
+panel_color = (60, 50, 80)
 border_color = (200, 200, 200)
-text_color = (255, 255, 255)
+text_color = "WHITE"
 arrow_color = "RED"
 
 heroes = [

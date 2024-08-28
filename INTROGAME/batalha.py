@@ -78,6 +78,7 @@ def battle_actions(screen, idx_hero, heroes, enemies):
                     if selected_action == ATTACK:
                         selected_enemy = select_enemy(screen, enemies)
                         if selected_enemy == None:
+                            draw_actions_menu(screen, selected_action, heroes[idx_hero])
                             continue  # Volta ao menu de ações
                         else:
                             heroes[idx_hero].attack_enemy(selected_enemy)
@@ -94,6 +95,7 @@ def battle_actions(screen, idx_hero, heroes, enemies):
                             if isinstance(heroes[idx_hero], Patricia_Abravanel):
                                 selected_ally = select_ally(screen, heroes, idx_hero)
                                 if selected_ally == None:
+                                    draw_actions_menu(screen, selected_action, heroes[idx_hero])
                                     continue
                                 else:
                                     heroes[idx_hero].special_skill(selected_ally)
@@ -101,6 +103,7 @@ def battle_actions(screen, idx_hero, heroes, enemies):
                             elif isinstance(heroes[idx_hero], Faustao) or isinstance(heroes[idx_hero], Rodrigo_Faro):
                                 selected_enemy = select_enemy(screen, enemies)
                                 if selected_enemy == None:
+                                    draw_actions_menu(screen, selected_action, heroes[idx_hero])
                                     continue  # Volta ao menu de ações
                                 else:
                                     heroes[idx_hero].special_skill(selected_enemy)
@@ -111,7 +114,7 @@ def battle_actions(screen, idx_hero, heroes, enemies):
                                 heroes[idx_hero].special_skill(enemies)
                                 run = False
     
-    #pygame.display.flip()
+    pygame.display.flip()
 
 def enemy_attack(enemy, hero, heroes):
     if enemy.is_skill_ready():

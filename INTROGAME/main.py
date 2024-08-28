@@ -11,8 +11,11 @@ width = 1024
 pygame.init()
 
 clock = pygame.time.Clock()
-playlist = ["./sons/musica1.ogg", "./sons/musica2.ogg", "./sons/musica3.ogg"]  # Substitua pelos caminhos corretos
-audio_manager = Audio(playlist)
+playlist = ["./sons/musica1.ogg", "./sons/musica2.ogg", "./sons/musica3.ogg"]  
+win_sound = "./sons/win_sound.ogg"  # Som de vitória
+lose_sound = "./sons/lose_sound.ogg"  # Som de derrota
+
+audio_manager = Audio(playlist, win_sound, lose_sound)
 audio_manager.iniciar_musica()
 
 # Configurar a tela
@@ -34,18 +37,12 @@ select_characters(screen, selected_heroes, enemies)
 background = pygame.transform.scale(pygame.image.load("./imagens/background/fundo.png"), (width, height))
 screen.blit(background, (0, 0))
 
-"""
-    6-efeito visual/sonoro para quando sofrerem ataque
-    
-"""
- 
 win_panel = pygame.transform.scale(pygame.image.load("./imagens/background/win.png"), (width, height))
 lost_panel = pygame.transform.scale(pygame.image.load("./imagens/background/lost.png"), (width, height))
 
 run = True
 current_hero_idx = -1
 current_enemy_idx = -1
-
 
 while run:
     for event in pygame.event.get():
@@ -58,6 +55,7 @@ while run:
     # Verifica se todos os heróis foram derrotados
     if not selected_heroes and enemies:
         screen.blit(lost_panel, (0, 0))
+        audio_manager.tocar_lose_sound()  # Toca o som de derrota
         break
     
     # Reseta a defesa dos heróis que estavam defendendo no turno anterior
@@ -79,6 +77,7 @@ while run:
     # Verifica se todos os inimigos foram derrotados
     if not enemies:
         screen.blit(win_panel, (0, 0))
+        audio_manager.tocar_win_sound()  # Toca o som de vitória
         break
 
     # Atualiza o índice do inimigo atual e realiza o ataque
@@ -92,5 +91,5 @@ while run:
     clock.tick(60)
 
 pygame.display.flip()
-pygame.time.delay(9000)
+pygame.time.delay(10000)
 pygame.quit()

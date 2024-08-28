@@ -82,7 +82,7 @@ class personagem_gen(pygame.sprite.Sprite):
         damage = attack * (50 / (50 + self.defense))
  
         self.life -= damage
-        if self.life < 0:
+        if self.life < 1:
             self.life = 0
             
     def attack_enemy(self, enemy):
@@ -108,7 +108,7 @@ class Silvio_Santos(personagem_gen):
 
     def special_skill(self, enemies):
         for enemy in enemies:
-            enemy.receive_attack(85)  # Dano causado pelo avião
+            enemy.receive_attack(100)  # Dano causado pelo avião
         self.cooldown = COOLDOWN_TIME
 
 
@@ -117,7 +117,7 @@ class Faustao(personagem_gen):
         - As dançarinas do Faustão mantêm o inimigo imóvel por 2 rodadas.
     """
     def __init__(self):
-        super().__init__("Faustão", 100, 90, 190, 250)
+        super().__init__("Faustão", 100, 100, 190, 250)
         self.image = pygame.transform.scale(pygame.image.load(f"./imagens/personagens/{self.name}.png"),(140, 290))
     
     def special_skill(self, enemy):
@@ -153,7 +153,7 @@ class Patricia_Abravanel(personagem_gen):
         self.image = pygame.transform.scale(pygame.image.load(f"./imagens/personagens/{self.name}.png"),(200, 290))
 
     def special_skill(self, ally):
-        ally.increase_life(50)
+        ally.increase_life(60)
         self.cooldown = COOLDOWN_TIME
 
 
@@ -166,7 +166,7 @@ class Rodrigo_Faro(personagem_gen):
         self.image = pygame.transform.scale(pygame.image.load(f"./imagens/personagens/{self.name}.png"),(130, 300))
 
     def special_skill(self, enemy):
-        enemy.receive_attack(105) 
+        enemy.receive_attack(110) 
         self.cooldown = COOLDOWN_TIME
 
 class Ellen_DeGeneres(personagem_gen):
@@ -177,7 +177,7 @@ class Ellen_DeGeneres(personagem_gen):
         
 class Jimmy_Falon(personagem_gen):
     def __init__(self):
-        super().__init__("Jimmy Fallon", 180, 140, 100, 230) 
+        super().__init__("Jimmy Fallon", 180, 140, 100, 210) 
         self.image = pygame.transform.scale(pygame.image.load(f"./imagens/personagens/{self.name}.png"),(100, 300))
         self.pos = [665, 275]
 
